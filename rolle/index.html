@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ROLLE · GEO · SEED ⟁</title>
+
+<style>
+body {
+    background:#000;
+    color:#0f0;
+    font-family:Consolas;
+    padding:40px;
+    text-align:center;
+}
+
+h1 { color:#6cf; }
+
+.geo {
+    position:relative;
+    width:360px;
+    height:360px;
+    margin:40px auto;
+    border:3px solid #6cf;
+    border-radius:12px;
+}
+
+.item {
+    position:absolute;
+    padding:6px 12px;
+    background:#111;
+    border:1px solid #6cf;
+    border-radius:6px;
+}
+
+/* GEO-Positionen */
+#ort   { top:10px; left:50%; transform:translateX(-50%); }
+#user  { top:110px; left:40px; }
+#use   { top:110px; right:40px; }
+#seed  { top:150px; left:50%; transform:translateX(-50%); }
+#out   { bottom:110px; left:40px; }
+#rolle { bottom:110px; right:40px; }
+</style>
+</head>
+
+<body>
+
+<h1>GEO · ORT · ROLLE · SEED ⟁</h1>
+
+<div class="geo">
+    <div id="ort"   class="item">ORT</div>
+    <div id="user"  class="item">USER</div>
+    <div id="use"   class="item">USE</div>
+    <div id="seed"  class="item">
