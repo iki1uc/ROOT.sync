@@ -1,0 +1,24 @@
+<script>
+function orbit(f){
+    if (f.includes("Φ")) return "IKI";
+    if (f.includes("φ∞")) return "MA³";
+    if (f.includes("φ²")) return "UC";
+    if (f.includes("φ")) return "BIR";
+    return "none";
+}
+
+function operator(f){
+    if (f.includes("AX")) return "AX";
+    if (f.includes("XA")) return "XA";
+    return "none";
+}
+
+function run(f){
+    if (f.includes("P4")) return "Start";
+    if (f.includes("P0")) return "Wake";
+    if (f.includes("P1")) return "Melt";
+    if (f.includes("P2")) return "Merge";
+    if (f.includes("Pe")) return "End";
+    return "none";
+}
+</script>

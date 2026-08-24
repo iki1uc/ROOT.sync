@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>USER – NEU‑USER‑ENGINE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { background:#000; color:#0f0; font-family:monospace; }
+h1, h2 { color:#6cf; }
+pre { background:#000; padding:10px; border:1px solid #333; }
+input { width:80%; padding:6px; background:#111; color:#0f0; border:1px solid #333; }
+button { padding:8px 14px; background:#333; color:#eee; border:1px solid #666; cursor:pointer; }
+button:hover { background:#444; }
+.block { border:1px solid #333; padding:10px; margin:20px 0; }
+</style>
+</head>
+
+<body>
+
+<h1>USER – NEU‑USER‑ENGINE</h1>
+<p>Dieses Modul verhält sich wie ein neuer User.</p>
+
+<!-- ========================= -->
+<!-- NEU‑USER Eingabe -->
+<!-- ========================= -->
+
+<h2>Neu‑User Eingabe</h2>
+<input id="userInput" type="text" placeholder="Φ + AX + P4">
+<button onclick="runUser()">Start</button>
+
+<!-- ========================= -->
+<!-- SEEÜ PANEL -->
+<!-- ========================= -->
+
+<h2>SEEÜ – Starterpanel</h2>
+<pre id="seeuOut">Noch keine Eingabe.</pre>
+
+<!-- ========================= -->
+<!-- 698869 BIOS -->
+<!-- ========================= -->
+
+<h2>698869 – BIOS‑Menü</h2>
+<pre id="biosOut">Noch keine Eingabe.</pre>
+
+<!-- ========================= -->
+<!-- Toolomat DOM -->
+<!-- ========================= -->
+
+<h2>TOOLOMAT DOM – Struktur/Masse</h2>
+<pre id="domOut">Noch keine Eingabe.</pre>
+
+<!-- ========================= -->
+<!-- Fläche 48 -->
+<!-- ========================= -->
+
+<h2>FLÄCHE 48 – Zwei‑Seiten‑Analyse</h2>
+
+<div class="block">
+<h3>Seite A</h3>
+<pre id="fa">Noch keine Eingabe.</pre>
+</div>
+
+<div class="block">
+<h3>Seite B</h3>
+<pre id="fb">Noch keine Eingabe.</pre>
+</div>
+
+<script>
+// =========================
+// NEU‑USER ENGINE
+// =========================
+
+function runUser(){
+    let f = document.getElementById("userInput").value;
+
+    document.getElementById("seeuOut").innerText = seeu(f);
+    document.getElementById("biosOut").innerText = bios(f);
+    document.getElementById("domOut").innerText = dom(f);
+
+    document.getElementById("fa").innerText = flaeche(f, "A");
+    document.getElementById("fb").innerText = flaeche(f, "B");
+}
+
+// =========================
+// SEEÜ PANEL
+// =========================
+
+function seeu(f){
+    return (
+        "SEEÜ‑SCAN\n" +
+        "Länge: " + f.length + "\n" +
+        "Orbit: " + orbit(f) + "\n" +
+        "Operator: " + operator(f) + "\n"
+    );
+}
+
+// =========================
+// 698869 BIOS
+// =========================
+
+function bios(f){
+    return (
+        "BIOS‑Menü\n" +
+        "Achse: " + orbit(f) + "\n" +
+        "RUN: " + run(f) + "\n"
+    );
+}
+
+// =========================
+// Toolomat DOM
+// =========================
+
+function dom(f){
+    return (
+        "DOM‑SCAN\n" +
+        "POS = (" + (f.length % 12) + ", φ)\n" +
+        "MASS = " + (f.length * 3) + "\n" +
+        "SCAN = " + f.length + " Zeichen\n"
+    );
+}
+
+// =========================
+// Fläche 48
+// =========================
+
+function flaeche(f, side){
+    let pos = (f.length + (side === "A" ? 3 : 7)) % 16;
+    let mass = f.length * (side === "A" ? 2 : 4);
+
+    return (
+        "Fläche " + side + "\n" +
+        "POS = (" + pos + ", φ)\n" +
+        "MASS = " + mass + "\n" +
+        "Orbit: " + orbit(f) + "\n" +
+        "Operator: " + operator(f) + "\n" +
+        "RUN: " + run(f) + "\n"
+    );
+}
+
+// =========================
+// Hilfsfunktionen
+// =========================
+
+function orbit(f){
+    if (f.includes("Φ")) return "IKI";
+    if (f.includes("φ∞")) return "MA³";
+    if (f.includes("φ²")) return "UC";
+    if (f.includes("φ")) return "BIR";
+    return "none";
+}
+
+function operator(f){
+    if (f.includes("AX")) return "AX";
+    if (f.includes("XA")) return "XA";
+    return "none";
+}
+
+function run(f){
+    if (f.includes("P4")) return "Start";
+    if (f.includes("P0")) return "Wake";
+    if (f.includes("P1")) return "Melt";
+    if (f.includes("P2")) return "Merge";
+    if (f.includes("Pe")) return "End";
+    return "none";
+}
+</script>
+
+</body>
+</html>
+
