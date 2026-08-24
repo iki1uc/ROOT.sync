@@ -178,6 +178,7 @@ export const SYSTEM = {
 
 // ─── AUTO-BOOT ──────────────────────────────────────────────────
 SYSTEM.boot();
+<script type="module" src="system.boot.js"></script>
 
 export { SYSTEM };
 node system.boot.js
