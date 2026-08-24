@@ -1,21 +1,17 @@
 // ============================================================
-// RESPO.boot · Master-Layer
+// RESPO.boot · Master-Startpunkt
 // ============================================================
 
-import { AXIOM0 } from './XI-NC3x3.room.js';
-import { SYSTEM } from './system.boot.js';
+import { STATION } from "./STATION.axis.js";
+import { SYSTEM } from "./system.boot.js";
 
 export async function RESPO_BOOT() {
 
-    // 1 — Axiom-0 zuerst (Admin-0)
-    await AXIOM0.prefetch?.();
+    await STATION.boot();
+    console.log("Station-Achse aktiv");
 
-    // 2 — SYSTEM.boot starten (Suite)
     await SYSTEM.boot();
+    console.log("SYSTEM.boot aktiv");
 
-    // 3 — RESPO-UI aktivieren
-    const ui = document.getElementById("respo-ui");
-    if (ui) ui.style.display = "block";
-
-    return "RESPO + SYSTEM aktiv";
+    return "RESPO + STATION + SYSTEM aktiv";
 }
