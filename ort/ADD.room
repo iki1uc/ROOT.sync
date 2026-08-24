@@ -1,0 +1,10 @@
+# ORT-SCORE (Stufe 2)
+
+ORT_SCORE =
+(BEN * 0.2) +
+(ZOOM * 0.3) +
+(ORT * 0.5) +
+(5D + 6D)
+
+# ORT kann keinen Gewinner bestimmen
+# Gewinner wird erst in HOME berechnet

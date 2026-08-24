@@ -1,0 +1,16 @@
+# ORT – Maschinenkern (12e + 6D + 360° + TMP)
+
+D0.ROOT  = ROOT.ORT
+D1.ACHSE = ACHSE.ORT
+D2.TMP   = TMP.ORT
+D3.LAGE  = LAGE.ORT
+D4.LATER = laTER.ORT
+D5.ORT   = ORT.ORT
+
+FREQ.12 = iki → bir → uc → LE → iki1uc → GO → sys → tem → AU → RA → TET → RIZ → …
+
+SEQ.360 = D0 → D1 → D2 → D3 → D4 → D5 → D0
+
+KONSTELLATION = TMP
+ACTIVE = TRUE
+

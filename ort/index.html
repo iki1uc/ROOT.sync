@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ORT · INDEX · Tech-Panel · NC² · 6D · 12e · Markt</title>
+
+<style>
+  body { background:#000; color:#00ffff; font-family:Consolas; padding:20px; }
+  h1 { color:#33ccff; text-shadow:0 0 10px #00ffff; margin-bottom:20px; }
+
+  .panel {
+    background:#111;
+    border:1px solid #333;
+    padding:15px;
+    margin:20px 0;
+    border-radius:8px;
+  }
+
+  .panel h2 {
+    color:#33ccff;
+    margin-top:0;
+  }
+
+  pre {
+    background:#000;
+    border:1px solid #333;
+    padding:12px;
+    border-radius:6px;
+    white-space:pre-wrap;
+  }
+</style>
+
+<script>
+// Datei laden
+async function load(path){
+  try{
+    const r = await fetch("./" + path);
+    if(!r.ok) return null;
+    return await r.text();
+  }catch(e){
+    return null;
+  }
+}
+
+// CSV summieren
+function sumCSV(txt){
+  if(!txt) return 0;
+  return txt.split("\n")
+    .map(v => parseFloat(v.trim()))
+    .filter(v => !isNaN(v))
+    .reduce((a,b)=>a+b,0);
+}
+
+// Vektor
+function vector(content){
+  return {
+    NC2: content.length,
+    D6: content.split("\n").length,
+    E12: content.includes("ERR") ? "kritisch" : "neutral"
+  };
+}
+
+// Status
+function status(content){
+  if(!content) return "FEHLT";
+  if(content.includes("ERR")) return "ORANGE";
+  return "GRÜN";
+}
+
+// Marktlage
+function markt(score){
+  if(score < 50) return "Marktlage: Schwach";
+  if(score < 120) return "Marktlage: Neutral";
+  if(score < 200) return "Marktlage: Stark";
+  return "Marktlage: Sehr stark";
+}
+
+// Wertbildung
+function wert(sum){
+  if(sum < 50) return "Wertbildung: niedrig";
+  if(sum < 150) return "Wertbildung: mittel";
+  if(sum < 300) return "Wertbildung: hoch";
+  return "Wertbildung: extrem";
+}
+
+async function start(){
+
+  const FILES = [
+    "12e allin allout.room",
+    "6D‑Baum.raw",
+    "6E → 6D.tech",
+    "NC²",
+    "NC² (1)",
+    "NC²octa².dual",
+    "NC²octa²□.merge",
+    "NC²□ (1).lock",
+    "NC²□ (1).sync",
+    "NC²□.lock",
+    "NC²□.sync",
+    "NC²□octa³.align",
+    "Q.room",
+    "STATIONEN.raw",
+    "T.room",
+    "level-pyramiden-7.csv",
+    "level-pyramiden-7 (1).csv",
+    "level-pyramiden-7 (2).csv",
+    "level-pyramiden-7 (3).csv",
+    "level-pyramiden-7 (4).csv",
+    "level-pyramiden-7 (5).csv",
+    "level-pyramiden-7 (6).csv",
+    "level-pyramiden-7 (7).csv",
+    "ADD.room",
+    "ORT.respo"
+  ];
+
+  const out = document.getElementById("out");
+
+  let sum7 = 0;
+  let SCORE = 0;
+
+  for(const f of FILES){
+    const content = await load(f);
+    const vec = vector(content || "");
+
+    if(f.includes("level-pyramiden-7")) sum7 += sumCSV(content);
+
+    if(f === "ADD.room" && content){
+      const m = content.match(/HOME_SCORE\s*=\s*([0-9\.\-]+)/);
+      SCORE = m ? parseFloat(m[1]) : 0;
+    }
+
+    const div = document.createElement("div");
+    div.className = "panel";
+    div.innerHTML = `
+      <h2>${f} — ${status(content)}</h2>
+      <pre>${content ? content.substring(0,300) : "FEHLT"}</pre>
+      <pre>
+NC²‑Vektor: ${vec.NC2}
+6D‑Vektor: ${vec.D6}
+12e‑Status: ${vec.E12}
+      </pre>
+    `;
+    out.appendChild(div);
+  }
+
+  // Markt + Wertbildung
+  const marketDiv = document.createElement("div");
+  marketDiv.className = "panel";
+  marketDiv.innerHTML = `
+    <h2>Marktlage & Wertbildung</h2>
+    <pre>
+Marktlage: ${markt(SCORE)}
+Wertbildung: ${wert(sum7)}
+    </pre>
+  `;
+  out.appendChild(marketDiv);
+}
+</script>
+</head>
+
+<body onload="start()">
+
+<h1>ORT · INDEX · Tech-Panel</h1>
+
+<div id="out"></div>
+
+</body>
+</html>
