@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ID · NC9×9 · FIELD · RESPO.ai</title>
+
+<style>
+  body { background:#000; color:#0f0; font-family:Consolas; padding:20px; }
+  h1 { color:#6cf; }
+  #grid { display:grid; grid-template-columns:repeat(9,40px); gap:4px; }
+  .cell {
+    width:40px; height:40px;
+    background:#111; border:1px solid #333;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .cell:hover { background:#222; }
+</style>
+
+<script type="module" src="system.boot.js"></script>
+
+</head>
+
+<body>
+
+<h1>ID · NC9×9</h1>
+<div id="grid"></div>
+
+<script type="module">
+    import { SYSTEM } from "./system.boot.js";
+
+    const grid = document.getElementById("grid");
+
+    // 81 Felder erzeugen
+    for (let i = 0; i < 81; i++) {
+        const div = document.createElement("div");
+        div.className = "cell";
+        div.textContent = i;
+        div.onclick = () => {
+            SYSTEM.logEntry(`ID: Feld ${i} gewählt`);
+        };
+        grid.appendChild(div);
+    }
+</script>
+
+</body>
+</html>
 
