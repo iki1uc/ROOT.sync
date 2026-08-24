@@ -180,3 +180,4 @@ export const SYSTEM = {
 SYSTEM.boot();
 
 export { SYSTEM };
+node system.boot.js
