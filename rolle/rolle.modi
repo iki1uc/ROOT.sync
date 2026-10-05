@@ -1,1 +1,21 @@
+# rolle.modi - leer = verspricht nix, aber funktional
+# 7 so - /7 von dem verspreche ich nir asuch was von
 
+MODI = LEER
+CYCLE = 7
+WORK = 6
+SLACK = 1
+Q = empty
+ORT = TMP
+FREQ = 12e
+6D = D5
+360 = Richtung
+
+# Rollen nur wenn rein
+ROLE = [api, aura, cpu, down, mana, rom3, rom9, up, zen]
+# Φ + AX + P4 = IKI + AX + Start
+
+# Bench Ritze nach 7
+BENCH = station-01.bench.item + station-02.bench.item
+SAVE = 1x bleibt, 2x von vorne ohne Schloss
+LOHN = alte Ergebnisse ritze und neue genutzt, sofort neu
