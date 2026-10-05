@@ -182,3 +182,26 @@ SYSTEM.boot();
 
 export { SYSTEM };
 node system.boot.js
+// ─── 0. Q is empty CHECK - nur wenn rein ──────────────────────
+const CONFIG = {
+  cycle: 7,        // 7 Tage, nicht 28
+  onlyIfIn: true,  // nur wenn rein nächstes Datum
+  versprechen: "nix"
+};
+
+function isQEmpty() {
+  // Q.room ist leer = kein Zwang jeden Tag rein
+  try {
+    const q = localStorage.getItem('Q.room');
+    return !q || q === 'empty' || q === '[]';
+  } catch { return true; }
+}
+
+// ─── AUTO-BOOT nur wenn rein ─────────────────────────────────
+if (CONFIG.onlyIfIn && isQEmpty()) {
+  console.log('Q is empty → warte bis rein, verspricht nix');
+  // nicht auto-booten, nur wenn user rein geht
+  window.addEventListener('click', () => SYSTEM.boot(), { once: true });
+} else {
+  SYSTEM.boot();
+}
