@@ -1,1 +1,24 @@
+// Q Loader - macht nicht nutzbares nutzbar, aber nur wenn rein
+async function loadQ() {
+  if (isQEmpty()) {
+    console.log('Q is empty → nur wenn rein');
+    return { empty: true, versprechen: "nix" };
+  }
 
+  // wenn rein, dann lade nur das was gebraucht wird - 7 so
+  const files = [
+    '12e allin allout.room', // FREQ 12e
+    '6D-Baum.raw', // 6D = D5
+    'STATIONEN.raw', // Stationen
+    'Q.room'
+  ];
+
+  const qData = {};
+  for (const f of files) {
+    try {
+      const r = await fetch(`./ort/Q/${f}`);
+      if (r.ok) qData[f] = await r.text();
+    } catch { /* fail erlaubt = leer lassen */ }
+  }
+  return qData;
+}
