@@ -1,206 +1,59 @@
-// ============================================================
-// SYSTEM.boot · ULTIMATIVE INTEGRATION
-// ============================================================
-// Enthält: NOAH · SYS.VEC · CONTINUUM · ORT · MAIN · LIVE.team
-//          SERVICE (NC9×9) · FIELD (C81) · ROOT.sync (Axiom-0)
-// ============================================================
+const isQEmpty = () => {
+  try { const q = localStorage.getItem('Q.room'); return !q || q === 'empty'; }
+  catch { return true; }
+};
 
-// ─── 1. KERN-SYSTEME ──────────────────────────────────────────
 import { NOAH } from './NOAH/NOAH.js';
 import { SYS_VEC } from './SYS.VEC/index.js';
 import { CONTINUUM_BRIDGE } from './CONTINUUM/CONTINUUM_BRIDGE.js';
 import { DEEPSPACENINE } from './DEEPSPACENINE/DEEPSPACENINE.js';
-
-// ─── 2. SERVICE-LAYER ─────────────────────────────────────────
 import { NC99 } from './service/NC9x9.room.js';
 import { FIELD } from './service/FIELD/field.core.js';
 import { ORT } from './ORT/boot.js';
 import { MAIN } from './MAIN/index.js';
 import { LIVE } from './LIVE.team/live.load.js';
-
-// ─── 3. AXIOM-0 ───────────────────────────────────────────────
 import { AXIOM0 } from './ROOT.sync/XI-NC3x3.room.js';
 
-// ─── 4. SYSTEM-OBJEKT ─────────────────────────────────────────
 export const SYSTEM = {
     name: 'IKI1UC · META-SYSTEM',
-    version: '3.0',
+    version: '3.0 /7 Q is empty',
     status: 'initializing',
-
-    // Kerne
-    noah: NOAH,
-    sysvec: SYS_VEC,
-    continuum: CONTINUUM_BRIDGE,
-    deepspace: DEEPSPACENINE,
-
-    // Service
-    nc99: NC99,
-    field: FIELD,
-    ort: ORT,
-    main: MAIN,
-    live: LIVE,
-
-    // Axiom
-    axiom0: AXIOM0,
-
-    // Log
-    log: [],
-
-    // ─── SYSTEM.boot() ──────────────────────────────────────────
+    noah: NOAH, sysvec: SYS_VEC, continuum: CONTINUUM_BRIDGE, deepspace: DEEPSPACENINE,
+    nc99: NC99, field: FIELD, ort: ORT, main: MAIN, live: LIVE, axiom0: AXIOM0,
+    _logs: [],
+    log(msg){
+      const zeit = new Date().toLocaleTimeString();
+      this._logs.push({zeit, msg});
+      console.log(`[${zeit}] ${msg}`);
+    },
     async boot() {
-        this.log('🚀 SYSTEM: Starte ultimative Integration...');
+        if (this.status === 'aktiv') return;
+        this._logs = [];
+        this.log('🚀 SYSTEM: Starte - Q Check /7...');
+        if (isQEmpty()) this.log('📭 Q is empty → nur wenn rein, verspricht nix');
 
-        // 1. Axiom-0 laden (Admin-0, immer da)
-        this.log('📜 Axiom-0: XI-NC3×3.room wird geladen...');
-        try {
-            await this.axiom0.prefetch?.();
-            this.log('✅ Axiom-0 aktiv');
-        } catch (e) {
-            this.log(`⚠️ Axiom-0: ${e.message} – wird übersprungen`);
-        }
+        try { await this.axiom0.prefetch?.(); this.log('✅ Axiom-0 aktiv'); } catch(e){ this.log(`⚠ Axiom-0: ${e.message}`); }
+        try { await this.nc99.init?.(); this.log('✅ NC9x9 81 aktiv'); } catch(e){ this.log(`⚠ NC9x9: ${e.message}`); }
+        try { this.field.init?.(); this.log('✅ FIELD C81 aktiv'); } catch(e){ this.log(`⚠ FIELD: ${e.message}`); }
+        try { this.sysvec.boot?.(); this.log('✅ SYS.VEC aktiv'); } catch(e){ this.log(`⚠ SYS.VEC: ${e.message}`); }
+        try { this.continuum.open?.(); this.log('✅ CONTINUUM offen'); } catch(e){ this.log(`⚠ CONTINUUM: ${e.message}`); }
+        try { this.noah.boot?.(true); this.log('✅ NOAH aktiv'); } catch(e){ this.log(`⚠ NOAH: ${e.message}`); }
+        try { await this.ort.boot?.(); this.log('✅ ORT aktiv'); } catch(e){ this.log(`⚠ ORT: ${e.message}`); }
+        try { await this.main.start?.(); this.log('✅ MAIN aktiv'); } catch(e){ this.log(`⚠ MAIN: ${e.message}`); }
+        try { await this.live.load?.(); this.log('✅ LIVE.team aktiv'); } catch(e){ this.log(`⚠ LIVE.team: ${e.message}`); }
+        try { this.deepspace.open?.(); this.log('✅ DEEPSPACENINE aktiv'); } catch(e){ this.log(`⚠ DEEPSPACENINE: ${e.message}`); }
 
-        // 2. SERVICE-Raster (81 Felder)
-        this.log('📐 NC9×9.room: 81-Felder-Raster wird initialisiert...');
-        try {
-            await this.nc99.init?.();
-            this.log('✅ NC9×9.room aktiv (81)');
-        } catch (e) {
-            this.log(`⚠️ NC9×9: ${e.message} – wird übersprungen`);
-        }
+        if (new Date().getDate() % 7 === 6) this.log('🧹 /7: bench Ritze - Lohn NEU');
 
-        // 3. FIELD (C81, ECO, Wirkung)
-        this.log('🌿 FIELD: C81-ECO-Feld wird initialisiert...');
-        try {
-            this.field.init?.();
-            this.log('✅ FIELD aktiv (C81)');
-        } catch (e) {
-            this.log(`⚠️ FIELD: ${e.message} – wird übersprungen`);
-        }
-
-        // 4. SYS.VEC (Energie-Kern)
-        this.log('⚡ SYS.VEC: Systemischer Vektor-Kern wird gestartet...');
-        try {
-            this.sysvec.boot?.();
-            this.log('✅ SYS.VEC aktiv');
-        } catch (e) {
-            this.log(`⚠️ SYS.VEC: ${e.message} – wird übersprungen`);
-        }
-
-        // 5. CONTINUUM (Brücke)
-        this.log('🌊 CONTINUUM: Brücke wird geöffnet...');
-        try {
-            this.continuum.open?.();
-            this.log('✅ CONTINUUM offen');
-        } catch (e) {
-            this.log(`⚠️ CONTINUUM: ${e.message} – wird übersprungen`);
-        }
-
-        // 6. NOAH (Kaiser)
-        this.log('👑 NOAH: Kaiser wird aktiviert...');
-        try {
-            this.noah.boot?.(true);
-            this.log('✅ NOAH aktiv');
-        } catch (e) {
-            this.log(`⚠️ NOAH: ${e.message} – wird übersprungen`);
-        }
-
-        // 7. ORT (Raum-Router)
-        this.log('🏠 ORT: Raum-System wird gestartet...');
-        try {
-            await this.ort.boot?.();
-            this.log('✅ ORT aktiv');
-        } catch (e) {
-            this.log(`⚠️ ORT: ${e.message} – wird übersprungen`);
-        }
-
-        // 8. MAIN (Bewegungs-Engine)
-        this.log('🏃 MAIN: Bewegungs-System wird gestartet...');
-        try {
-            await this.main.start?.();
-            this.log('✅ MAIN aktiv');
-        } catch (e) {
-            this.log(`⚠️ MAIN: ${e.message} – wird übersprungen`);
-        }
-
-        // 9. LIVE.team (Work-Suite)
-        this.log('🎭 LIVE.team: Work-Suite wird gestartet...');
-        try {
-            await this.live.load?.();
-            this.log('✅ LIVE.team aktiv');
-        } catch (e) {
-            this.log(`⚠️ LIVE.team: ${e.message} – wird übersprungen`);
-        }
-
-        // 10. DEEPSPACENINE (Meta-Raum)
-        this.log('🌌 DEEPSPACENINE: Meta-Raum wird geöffnet...');
-        try {
-            this.deepspace.open?.();
-            this.log('✅ DEEPSPACENINE aktiv');
-        } catch (e) {
-            this.log(`⚠️ DEEPSPACENINE: ${e.message} – wird übersprungen`);
-        }
-
-        // 11. Continuum öffnen (final)
         this.continuum.open = true;
         this.status = 'aktiv';
-
-        this.log('✅ SYSTEM: ULTIMATIVE INTEGRATION ABGESCHLOSSEN!');
-        this.log(`📦 Module: ${Object.keys(this).filter(k => k !== 'log').join(', ')}`);
-
+        this.log('✅ FERTIG - Q is empty = Maß aller Dinge');
         return this.status;
-    },
-
-    // ─── SYSTEM.log() ───────────────────────────────────────────
-    log(entry) {
-        const zeit = new Date().toISOString();
-        this.log.push({ zeit, entry });
-        console.log(`[SYSTEM] ${entry}`);
-    },
-
-    // ─── SYSTEM.status() ────────────────────────────────────────
-    status() {
-        return {
-            name: this.name,
-            status: this.status,
-            modules: Object.keys(this).filter(k => k !== 'log'),
-            noah: this.noah?.status || 'inaktiv',
-            sysvec: this.sysvec?.status || 'inaktiv',
-            continuum: this.continuum?.open || false,
-            axiom0: this.axiom0?.status || 'inaktiv',
-            nc99: this.nc99?.status || 'inaktiv',
-            field: this.field?.status || 'inaktiv',
-            ort: this.ort?.status || 'inaktiv',
-            main: this.main?.status || 'inaktiv',
-            live: this.live?.status || 'inaktiv'
-        };
     }
 };
 
-// ─── AUTO-BOOT ──────────────────────────────────────────────────
-SYSTEM.boot();
-<script type="module" src="system.boot.js"></script>
-
-export { SYSTEM };
-node system.boot.js
-// ─── 0. Q is empty CHECK - nur wenn rein ──────────────────────
-const CONFIG = {
-  cycle: 7,        // 7 Tage, nicht 28
-  onlyIfIn: true,  // nur wenn rein nächstes Datum
-  versprechen: "nix"
-};
-
-function isQEmpty() {
-  // Q.room ist leer = kein Zwang jeden Tag rein
-  try {
-    const q = localStorage.getItem('Q.room');
-    return !q || q === 'empty' || q === '[]';
-  } catch { return true; }
-}
-
-// ─── AUTO-BOOT nur wenn rein ─────────────────────────────────
-if (CONFIG.onlyIfIn && isQEmpty()) {
-  console.log('Q is empty → warte bis rein, verspricht nix');
-  // nicht auto-booten, nur wenn user rein geht
+if (isQEmpty()) {
+  console.log('Q is empty → click um zu starten, /7 verspricht nix');
   window.addEventListener('click', () => SYSTEM.boot(), { once: true });
 } else {
   SYSTEM.boot();
