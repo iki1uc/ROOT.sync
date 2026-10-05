@@ -1,1 +1,7 @@
-
+// ort.way leer = verspricht nix, aber funktional
+if (ort.way === leer) {
+  // kein fester Weg, nur wenn rein
+  TMP = ORT; // Konstellation = TMP
+  WAY = nächster Schritt nur nächstes Datum
+  // 7 so = nach 7 Wegen bench Ritze
+}
